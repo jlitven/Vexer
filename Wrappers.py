@@ -18,6 +18,7 @@ class DictionaryEntry(defaultdict):
 
     def __str__(self):
         # TODO: understand why this works
+        # TODO: Add conversion method to html
         string = self.word + '<br>'
         for part_of_speech, definitions in self.iteritems():
             string += part_of_speech + '<br>'

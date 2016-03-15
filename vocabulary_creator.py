@@ -6,19 +6,20 @@ from dictionary_parser import dictionary_entry
 import argparse, logging, re
 logging.basicConfig(level=logging.DEBUG)
 
+# TODO: Fix vocab definitions for 'groovy', 'party'
+
 class AnkiWord(AnkiObject):
 
     '''
     Stores vocabulary information.
     '''
-    _tag_name = 'vocabulary'
+    tag_name = 'vocabulary'
 
     def __init__(self, dict_entry):
         self.dict_entry = dict_entry
         super(AnkiWord, self).__init__(dict_entry.word)
 
     def question_text(self):
-        # TODO: Add closure and remove word in usage
         word = self.dict_entry.word
         text = self.dict_entry.__str__()
         text = re.sub(word, '{{c1::' + word + '}}', text.decode('utf-8'))
@@ -37,9 +38,11 @@ def get_words(input):
 
 def get_args_from_user():
     # SOMEDAY: fix this quick hack
-    default_path = '/Users/alexanderlitven/Documents/Anki/User 1/collection.anki2'
+    default_path = '/Users/alexanderlitven/Documents/Anki/User 1/' + \
+                    'collection.anki2'
     default_deck = 'Knowledge'
-    parser = argparse.ArgumentParser(description='Create anki cards from words.')
+    parser = argparse.ArgumentParser(description=
+                                     'Create anki cards from words.')
     parser.add_argument('input', type=str, nargs='+',
         help='List of words or text files to add to anki')
     parser.add_argument('-p', '--collection_path', type=str,
@@ -64,13 +67,13 @@ def get_args_from_user():
 def create_anki_words(words):
     anki_words = []
     for word in words:
-        entry = dictionary_entry(word,1,3)
+        entry = dictionary_entry(word, num_definitions=1,
+                                 num_parts_of_speech=3)
         anki_words.append(AnkiWord(entry))
 
     return anki_words
 def main():
 
-    # TODO: Get words from command line or file
     args = get_args_from_user()
     words = args.words
     collection_path = args.collection_path
@@ -79,8 +82,8 @@ def main():
     # TODO: Create anki words
     anki_words = create_anki_words(words)
 
-    for word in anki_words:
-        logging.debug(word.question_text())
+    #for word in anki_words:
+        #logging.debug(word.question_text())
 
     # TODO: Create anki words
     create_cards(anki_words, deck_name, collection_path)

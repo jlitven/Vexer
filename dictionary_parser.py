@@ -2,7 +2,7 @@
 Searches for a word and prints a nicely formatted definition.
 '''
 
-import sys, re
+import sys, re, pdb
 sys.path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/PyObjC')
 from DictionaryServices import DCSCopyTextDefinition
 from Wrappers import DictionaryEntry, Definition
@@ -30,9 +30,14 @@ def create_dictionary_entry(result,
 
     # Get parts of speech text
     parts_of_speech_text = []
-    for index, text in enumerate(separated_text):
-        if symbol in text:
-            parts_of_speech_text.append(separated_text[index+1])
+    if len(separated_text) == 1:
+        # no split occured
+        symbol_index = result.find(symbol)
+        parts_of_speech_text.append(result[symbol_index+1:])
+    else:
+        for index, text in enumerate(separated_text):
+            if symbol in text:
+                parts_of_speech_text.append(separated_text[index+1])
 
     dict_entry = DictionaryEntry(word)
     for text in parts_of_speech_text:
