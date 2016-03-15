@@ -18,6 +18,8 @@ def create_dictionary_entry(result,
                             num_parts_of_speech):
     '''Create a dictionary entry from a dictionary lookup'''
 
+    word = result.split(' ', 1)[0]
+
     symbol = u'\u25b6'
     capital_words = ['PHRASES', 'DERIVATIVES', 'ORIGIN']
 
@@ -32,7 +34,7 @@ def create_dictionary_entry(result,
         if symbol in text:
             parts_of_speech_text.append(separated_text[index+1])
 
-    dict_entry = DictionaryEntry()
+    dict_entry = DictionaryEntry(word)
     for text in parts_of_speech_text:
 
         # Split the text by numbers, otherwise by first word
@@ -80,7 +82,7 @@ def dictionary_entry(word, num_definitions=1, num_parts_of_speech=1):
 def main():
     try:
         word = sys.argv[1]
-    except IndexErro:
+    except IndexError:
         print 'You did not enter a word to look up.'
         sys.exit()
 

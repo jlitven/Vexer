@@ -9,20 +9,21 @@ class DictionaryEntry(defaultdict):
     '''
     Wrapper for a dictionary entry in mac osx
     '''
-    def __init__(self):
+    def __init__(self, word):
         super(DictionaryEntry, self).__init__(list)
+        self.word = word
 
     def add_definition(self, part_of_speech, definition):
         self[part_of_speech].append(definition)
 
     def __str__(self):
         # TODO: understand why this works
-        string = ""
+        string = self.word + '<br>'
         for part_of_speech, definitions in self.iteritems():
-            string += part_of_speech + '\n'
+            string += part_of_speech + '<br>'
             for definition in definitions:
                 string += definition.__str__().decode('utf-8')
-            string += '\n'
+            string += '<br>'
         return string.encode('utf-8')
 
 class Definition(object):
@@ -34,8 +35,7 @@ class Definition(object):
         self.usages = usages
 
     def __str__(self):
-        description_string = self.description.encode('utf-8')
-        usage_string = '\n'.join(self.usages)
-        definition = 'defn:\n{} \nusage:\n{}\n'.format(description_string,
-                                                     usage_string)
+        description_string = unicode(self.description).encode('utf-8')
+        usage_string = '<br>'.join(self.usages)
+        definition = 'defn:<br>{} <br>usage:<br>{}<br>'.format(description_string, unicode(usage_string).encode('utf-8'))
         return definition
