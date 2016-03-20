@@ -4,6 +4,7 @@
 Wrapper objects for mac osx dictionary entries.
 '''
 from collections import defaultdict
+import pdb
 
 class DictionaryEntry(defaultdict):
     '''
@@ -17,15 +18,13 @@ class DictionaryEntry(defaultdict):
         self[part_of_speech].append(definition)
 
     def __str__(self):
-        # TODO: understand why this works
-        # TODO: Add conversion method to html
-        string = self.word + '<br>'
+        string = self.word + u'\n'
         for part_of_speech, definitions in self.iteritems():
-            string += part_of_speech + '<br>'
+            string += part_of_speech + u'\n'
             for definition in definitions:
-                string += definition.__str__().decode('utf-8')
-            string += '<br>'
-        return string.encode('utf-8')
+                string += definition.__str__()
+            string += u'\n'
+        return string
 
 class Definition(object):
     '''
@@ -36,7 +35,7 @@ class Definition(object):
         self.usages = usages
 
     def __str__(self):
-        description_string = unicode(self.description).encode('utf-8')
-        usage_string = '<br>'.join(self.usages)
-        definition = 'defn:<br>{} <br>usage:<br>{}<br>'.format(description_string, unicode(usage_string).encode('utf-8'))
+        description_string = self.description
+        usage_string = u'\n'.join(self.usages)
+        definition = u'defn:\n{} <br>usage:\n{}\n'.format(description_string, usage_string)
         return definition

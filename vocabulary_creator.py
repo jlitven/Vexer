@@ -1,12 +1,12 @@
 '''
 Script to create anki vocabulary cards.
 '''
-from card_creator import create_cards, AnkiObject
+from card_creator import create_cards, AnkiObject, HTML
 from dictionary_parser import dictionary_entry
 import argparse, logging, re
 logging.basicConfig(level=logging.DEBUG)
 
-# TODO: Fix vocab definitions for 'groovy', 'party'
+# SOMEDAY: Fix vocab definitions for 'groovy', 'party', 'pumpkin'
 
 class AnkiWord(AnkiObject):
 
@@ -14,6 +14,34 @@ class AnkiWord(AnkiObject):
     Stores vocabulary information.
     '''
     tag_name = 'vocabulary'
+    model_name = 'Vocabulary'
+
+    styling_text = '''
+.card {
+ font-family: baskerville;
+ font-size: 20px;
+ text-align: left;
+ color: black;
+ background-color: white;
+}
+
+.description, .usage {
+ margin-left: 30px;
+}
+
+.usage {
+ font-style: italic;
+}
+
+h2 {
+ font-size: 25px;
+}
+
+.answer, .cloze {
+ font-weight: bold;
+}
+'''
+
 
     def __init__(self, dict_entry):
         self.dict_entry = dict_entry
@@ -21,8 +49,29 @@ class AnkiWord(AnkiObject):
 
     def question_text(self):
         word = self.dict_entry.word
-        text = self.dict_entry.__str__()
-        text = re.sub(word, '{{c1::' + word + '}}', text.decode('utf-8'))
+        dict_entry = self.dict_entry
+        header = u'<h1>{}</h1>'.format(word)
+        text = header
+        for part_of_speech, definitions in dict_entry.iteritems():
+            pos_text = u'<h2>{}</h2>'.format(part_of_speech)
+            pos_text = HTML.add_div_tag(pos_text, 'part_of_speech')
+
+            text += pos_text
+
+            for definition in definitions:
+                description = definition.description
+                usages = definition.usages
+                description_text = HTML.add_div_tag(description,
+                                                    "description")
+                text += description_text + u'<br>'
+
+                for usage in usages:
+                    usage_text = HTML.add_div_tag(u'e.g.' + usage,
+                                                            "usage")
+                    text += usage_text + u'<br>'
+
+
+        text = HTML.substitute_clozure(text, word)
         return text
 
 def get_words(input):
@@ -37,10 +86,10 @@ def get_words(input):
     return words
 
 def get_args_from_user():
-    # SOMEDAY: fix this quick hack
+    # HACK: fix this quick hack
     default_path = '/Users/alexanderlitven/Documents/Anki/User 1/' + \
                     'collection.anki2'
-    default_deck = 'Knowledge'
+    default_deck = 'vocabulary'
     parser = argparse.ArgumentParser(description=
                                      'Create anki cards from words.')
     parser.add_argument('input', type=str, nargs='+',
@@ -68,7 +117,7 @@ def create_anki_words(words):
     anki_words = []
     for word in words:
         entry = dictionary_entry(word, num_definitions=1,
-                                 num_parts_of_speech=3)
+                                 num_parts_of_speech=5)
         anki_words.append(AnkiWord(entry))
 
     return anki_words
@@ -79,13 +128,7 @@ def main():
     collection_path = args.collection_path
     deck_name = args.deck_name
 
-    # TODO: Create anki words
     anki_words = create_anki_words(words)
-
-    #for word in anki_words:
-        #logging.debug(word.question_text())
-
-    # TODO: Create anki words
     create_cards(anki_words, deck_name, collection_path)
-
-main()
+if __name__ == '__main__':
+    main()

@@ -6,55 +6,95 @@ Anki card creator.
 import os, pdb, csv, random, re
 from anki import Collection
 from anki.importing import TextImporter
+from abc import ABCMeta, abstractmethod, abstractproperty
+
+class HTML(object):
+    @staticmethod
+    def add_div_tag(text, class_name=None, id_name=None):
+        return HTML.add_tag(text, 'div', class_name, id_name)
+
+    @staticmethod
+    def add_span_tag(text, class_name=None, id_name=None):
+        return HTML.add_tag(text, 'span', class_name, id_name)
+
+    @staticmethod
+    def add_tag(text, tag_name, class_name=None, id_name=None):
+        class_text = u''
+        id_text = u''
+        if class_name:
+            class_text = u'class="{}"'.format(class_name)
+        if id_name:
+            id_text = u'id="{}"'.format(id_name)
+        return u'<{} {} {}> {} </{}>'.format(tag_name,
+                                            class_text,
+                                            id_text,
+                                            text,
+                                            tag_name)
+    @staticmethod
+    def substitute_clozure(text, word):
+        text = re.sub(word, u'{{{{c1::{}}}}}'.format(word), text)
+        return text
+
 
 class AnkiObject(object):
 
     '''
     Stores information used to create an anki card.
     '''
+    __metaclass__  = ABCMeta
 
-    # TODO: Make this abstract.
-    tag_name = ''
+    @abstractproperty
+    def tag_name(self):
+        pass
+
+    @abstractproperty
+    def model_name(self):
+        pass
 
     def __init__(self, answer):
         self.answer = answer
 
-    def question_text():
-        # TODO: make this an abstract method
+    @abstractmethod
+    def question_text(self):
+        pass
+
+    @abstractmethod
+    def styling_text(self):
         pass
 
 def get_delimiter():
     return '\t'
 
 def get_question_index():
+    return 1
+
+def get_answer_index():
     return 0
 
 def get_card_ids(collection, tag_name):
     ids = collection.findCards('tag:{}'.format(tag_name))
     return ids
 
-def html_answer(text):
-    beginning_tag = '<font color="blue"><b>'
-    ending_tag = '</b></font>'
-    return unicode(beginning_tag + text + ending_tag).encode('utf-8')
+def get_answers_from_collection(collection, ids):
+    answers = []
+    for id in ids:
+        card = collection.getCard(id)
+        note = card.note()
+        answer = note.fields[get_answer_index()]
+        answers.append(answer)
+    return answers
+
+def get_all_answers_from_collection(collection, tag_name):
+    ids = get_card_ids(collection, tag_name)
+    return get_answers_from_collection(collection, ids)
 
 def sample_answers_from_collection(collection, tag_name, num_samples):
-
     ids = get_card_ids(collection, tag_name)
     error_msg = "Need at least {} in collection.".format(num_samples)
     assert len(ids) >= num_samples, error_msg
     sampled_ids = random.sample(ids, num_samples)
 
-    samples = []
-    for id in sampled_ids:
-        card = collection.getCard(id)
-        note = card.note()
-        question_text = note.fields[get_question_index()]
-        answer_regex = re.compile(r'{{c1::(.*?)}}')
-        match = answer_regex.search(question_text)
-        answer = match.group(1)
-        samples.append(answer)
-    return samples
+    return get_answers_from_collection(collection, sampled_ids)
 
 def sample_answers_from_objects(anki_objects, num_samples):
 
@@ -69,8 +109,7 @@ def sample_answers_from_objects(anki_objects, num_samples):
 def create_csv_row(anki_object, anki_objects, tag_name, collection,
                    num_choices=4):
 
-    # TODO: understand why this works
-    question = unicode(anki_object.question_text()).encode('utf-8')
+    question = anki_object.question_text()
     answer = anki_object.answer
 
     other_objects = list(anki_objects)
@@ -87,38 +126,90 @@ def create_csv_row(anki_object, anki_objects, tag_name, collection,
 
     choices = object_samples + collection_samples
     choices += [anki_object.answer]
-    choices = [unicode(choice).encode('utf-8') for choice in choices]
     random.shuffle(choices)
-    letters = 'abcde'
+    letters = u'abcde'
     choices_text = ['{}) {}'.format(letter, choice)
                 for (letter, choice) in zip(letters, choices)]
-    choices_text = '<br>'.join(choices_text)
+    choices_text = [HTML.add_div_tag(choice, class_name="choice")
+                for choice in choices_text]
 
-    answer_text = re.sub(answer, html_answer(answer), choices_text)
+    choices_text = u''.join(choices_text)
+    answer_text = choices_text
+    answer_text = re.sub(answer,
+                         HTML.add_span_tag(answer, class_name="answer"),
+                         choices_text)
 
-    row = [question, choices_text, answer_text]
+    row = [answer, question, choices_text, answer_text]
     return row
 
 def write_to_csv(anki_objects, tag_name, file_path, collection):
-    # TODO: Make sure there are enough anki objects
 
     with open(file_path, 'wb') as csvfile:
         writer = csv.writer(csvfile, delimiter=get_delimiter())
 
         for anki_object in anki_objects:
+            answer = anki_object.answer
+            if answer in get_all_answers_from_collection(collection,
+                                                         tag_name):
+                print '{} already in collection. Skipping'.format(answer)
+                continue
             row = create_csv_row(anki_object, anki_objects,
                                  tag_name, collection)
+            # convert back to bytes
+            row = [cell.encode('utf-8') for cell in row]
             writer.writerow(row)
 
 def set_model(model_name, deck_name, collection):
     did = collection.decks.id(deck_name)
     collection.decks.select(did)
-    # TODO: Create model if doesn't exist
-    model = collection.models.byName("Multiple Choice")
+    model = collection.models.byName(model_name)
     deck = collection.decks.get(did)
+    deck['mid'] = model['id']
     collection.decks.save(deck)
 
+def create_fields(collection):
+    models = collection.models
+    field_names = ['Value', 'Question', 'Choices', 'Answers']
+    fields = map(lambda field_name:models.newField(field_name),
+                 field_names)
+    return fields
+
+def create_templates(collection):
+    models = collection.models
+    template = models.newTemplate(u'Card 1')
+
+    # SOMEDAY: Make fields not hard-coded
+    question_text = '{{cloze:Question}}<br>{{Choices}}'
+    answer_text = '{{cloze:Question}}<br>{{Answers}}'
+    template['qfmt'] = question_text
+    template['afmt'] = answer_text
+    return [template]
+
+def create_model(anki_object, deck_name, collection):
+    model_name = anki_object.model_name
+    model = collection.models.byName(model_name)
+    if model is None:
+        print 'Creating model: {}'.format(model_name)
+
+        models = collection.models
+        model = models.new(model_name)
+        models.add(model)
+
+        for field in create_fields(collection):
+            models.addField(model, field)
+
+        for template in create_templates(collection):
+            models.addTemplate(model, template)
+
+        model['css'] = anki_object.styling_text
+
+        collection.models.update(model)
+
+    set_model(model_name, deck_name, collection)
+
+
 def run_importer(file_path, tag_name, deck_name, collection):
+    assert os.stat(file_path).st_size > 0, "Nothing to import!"
     ti = TextImporter(collection, file_path)
     ti.delimiter = get_delimiter()
     ti.allowHTML = True
@@ -135,16 +226,16 @@ def run_importer(file_path, tag_name, deck_name, collection):
         collection.db.execute("update cards set did = ? where id = ?",
                               did, id)
 
+
 def import_to_anki(file_path, tag_name, deck_name, collection):
 
     assert deck_name in collection.decks.allNames(), "No deck named " + deck_name
 
-    set_model("Cloze", deck_name, collection)
     run_importer(file_path, tag_name, deck_name, collection)
 
 def get_csv_file_path():
     file_name = 'temp.csv'
-    # TODO: Fix hack
+    # HACK: Fix hack
     dir_name = ('/Users/alexanderlitven/Projects/'
                 'vocabulary_flash_cards_creator')
     return os.path.join(dir_name, file_name)
@@ -160,7 +251,7 @@ def create_cards(anki_objects, deck_name, collection_path):
     tag_name = anki_objects[0].tag_name
 
     write_to_csv(anki_objects, tag_name, csv_file_path, collection)
-
+    create_model(anki_objects[0], deck_name, collection)
     import_to_anki(csv_file_path, tag_name, deck_name, collection)
 
     collection.close()
