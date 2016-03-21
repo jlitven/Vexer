@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#! /usr/bin/python
 
 '''
 Anki card creator.
@@ -9,6 +9,10 @@ from anki.importing import TextImporter
 from abc import ABCMeta, abstractmethod, abstractproperty
 
 class HTML(object):
+
+    '''
+    Helper methods for creating HTML styling.
+    '''
     @staticmethod
     def add_div_tag(text, class_name=None, id_name=None):
         return HTML.add_tag(text, 'div', class_name, id_name)
@@ -32,7 +36,7 @@ class HTML(object):
                                             tag_name)
     @staticmethod
     def substitute_clozure(text, word):
-        text = re.sub(word, u'{{{{c1::{}}}}}'.format(word), text)
+        text = re.sub(word, u'{{{{c1::{}}}}}'.format(word), text, flags=re.I)
         return text
 
 
@@ -136,13 +140,14 @@ def create_csv_row(anki_object, anki_objects, tag_name, collection,
     choices_text = u''.join(choices_text)
     answer_text = choices_text
     answer_text = re.sub(answer,
-                         HTML.add_span_tag(answer, class_name="answer"),
+                         u'<b>{}</b>'.format(answer),
                          choices_text)
 
     row = [answer, question, choices_text, answer_text]
     return row
 
-def write_to_csv(anki_objects, tag_name, file_path, collection):
+def write_to_csv(anki_objects, tag_name, file_path, collection,
+                 num_choices):
 
     with open(file_path, 'wb') as csvfile:
         writer = csv.writer(csvfile, delimiter=get_delimiter())
@@ -154,7 +159,7 @@ def write_to_csv(anki_objects, tag_name, file_path, collection):
                 print '{} already in collection. Skipping'.format(answer)
                 continue
             row = create_csv_row(anki_object, anki_objects,
-                                 tag_name, collection)
+                                 tag_name, collection, num_choices)
             # convert back to bytes
             row = [cell.encode('utf-8') for cell in row]
             writer.writerow(row)
@@ -235,22 +240,21 @@ def import_to_anki(file_path, tag_name, deck_name, collection):
 
 def get_csv_file_path():
     file_name = 'temp.csv'
-    # HACK: Fix hack
-    dir_name = ('/Users/alexanderlitven/Projects/'
-                'vocabulary_flash_cards_creator')
+    dir_name = os.path.dirname(os.path.realpath(__file__))
     return os.path.join(dir_name, file_name)
 
 def get_collection(collection_path):
     assert os.path.exists(collection_path), "No collection found."
     return Collection(collection_path)
 
-def create_cards(anki_objects, deck_name, collection_path):
+def create_cards(anki_objects, deck_name, collection_path, num_choices):
 
     collection = get_collection(collection_path)
     csv_file_path = get_csv_file_path()
     tag_name = anki_objects[0].tag_name
 
-    write_to_csv(anki_objects, tag_name, csv_file_path, collection)
+    write_to_csv(anki_objects, tag_name, csv_file_path, collection,
+                 num_choices)
     create_model(anki_objects[0], deck_name, collection)
     import_to_anki(csv_file_path, tag_name, deck_name, collection)
 

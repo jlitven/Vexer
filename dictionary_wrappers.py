@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/local/bin/python
 
 '''
 Wrapper objects for mac osx dictionary entries.
@@ -8,7 +8,7 @@ import pdb
 
 class DictionaryEntry(defaultdict):
     '''
-    Wrapper for a dictionary entry in mac osx
+    Wrapper for a dictionary entry in mac osx.
     '''
     def __init__(self, word):
         super(DictionaryEntry, self).__init__(list)
@@ -37,5 +37,5 @@ class Definition(object):
     def __str__(self):
         description_string = self.description
         usage_string = u'\n'.join(self.usages)
-        definition = u'defn:\n{} <br>usage:\n{}\n'.format(description_string, usage_string)
+        definition = u'defn:\n{}\nusage:\n{}\n'.format(description_string, usage_string)
         return definition

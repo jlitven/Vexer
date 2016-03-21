@@ -1,11 +1,11 @@
+#! /usr/bin/python
+
 '''
 Searches for a word and prints a nicely formatted definition.
 '''
-
 import sys, re, pdb
-sys.path.append('/System/Library/Frameworks/Python.framework/Versions/2.7/Extras/lib/python/PyObjC')
 from DictionaryServices import DCSCopyTextDefinition
-from Wrappers import DictionaryEntry, Definition
+from dictionary_wrappers import DictionaryEntry, Definition
 
 def add_period(string):
     if not string[-1] == '.':
@@ -16,8 +16,9 @@ def add_period(string):
 def create_dictionary_entry(result,
                             num_definitions,
                             num_parts_of_speech):
-    '''Create a dictionary entry from a dictionary lookup'''
-
+    '''
+    Create a dictionary entry from a dictionary lookup.
+    '''
     word = result.split(' ', 1)[0]
 
     symbol = u'\u25b6'
@@ -73,12 +74,13 @@ def create_dictionary_entry(result,
             break
     return dict_entry
 
-def dictionary_entry(word, num_definitions=1, num_parts_of_speech=1):
+def dictionary_entry(word, num_definitions=1, num_parts_of_speech=3):
     '''Returns a dictonary entry of the word'''
     word_range = (0, len(word))
     dictionary_result = DCSCopyTextDefinition(None, word, word_range)
     if not dictionary_result:
         print "{} not found in Dictionary.".format(word)
+        return None
     else:
         return create_dictionary_entry(dictionary_result,
                                        num_definitions,
@@ -91,7 +93,7 @@ def main():
         print 'You did not enter a word to look up.'
         sys.exit()
 
-    print dictionary_entry(word, 1, 10)
+    print dictionary_entry(word)
 
 if __name__ == '__main__':
     main()
