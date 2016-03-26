@@ -1,2 +1,2 @@
-# vocabulary_flash_cards_creator
+# vex
 Dictionary-based flash cards using Anki
