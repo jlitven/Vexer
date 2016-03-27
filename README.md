@@ -2,11 +2,9 @@
 Vexer (Vocabulary Expander) creates stylish English vocabulary flash cards for the popular SRS software anki (http://ankisrs.net/) using Mac OS X's built-in dictionary.
 
 Vexer uses word definitions to construct cloze-deletioned, multiple-choice anki cards. Here is an example card with the words *silly*, *funky* and *goofy*:
-
 ![Vexer example question](screenshots/vexer_example_card_question.png?raw=true "Vexer Example Question")
 
 And the corresponding answer:
-And the answer
 ![Vexer example answer](screenshots/vexer_example_card_answer.png?raw=true "Vexer Example Answer")
 
 ## Version
@@ -48,7 +46,7 @@ For information about all parameters run:
 vexer --help
 ```
 
-_Note: Vexer adds the tag `vocbulary` to the anki cards. Do not edit these tags as vexer uses this tag information._
+_Note: Vexer adds the tag `vocabulary` to the anki cards. Do not edit these tags as vexer uses this tag information._
 
 ## Uninstall
 `vexer` can be uninstalled using `pip`:
