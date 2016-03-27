@@ -216,9 +216,9 @@ def get_args_from_user():
     parser = argparse.ArgumentParser(description=
                                      'Create anki cards from words.')
     parser.add_argument('input', type=str, nargs='+',
-        help='List of words or text files to add to anki.')
+        help='List of words or text files to add to anki')
 
-    help = 'Number of choices in a card.'
+    help = 'Number of choices in a card'
     parser.add_argument('-n_c', '--num_choices', type=int,
                         choices=range(2,6),
                         help=help)

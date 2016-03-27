@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name = 'vexer',
-    version = '0.1',
+    version = '0.2',
     description = 'Vocabulary expander using anki and mac osx dictionary.',
     url = 'https://github.com/jlitven/vexer',
     download_url = 'https://github.com/jlitven/vexer/releases/download/v0.1/vexer-0.1.tar.gz',
