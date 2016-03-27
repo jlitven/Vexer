@@ -1,3 +1,0 @@
-[console_scripts]
-vexer = vexer.vocabulary_creator:main
-

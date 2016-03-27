@@ -15,13 +15,19 @@ def add_period(string):
     else:
         return string
 
+def first_word(string):
+    return string.split(' ', 1)[0]
+
 def create_dictionary_entry(result,
                             num_definitions,
                             num_parts_of_speech):
     '''
     Create a dictionary entry from a dictionary lookup.
     '''
-    word = result.split(' ', 1)[0]
+    word = first_word(result)
+
+    # Remove all pronounciation
+    pronounciation_regex = r'|*?|'
 
     symbol = u'\u25b6'
     capital_words = ['PHRASES', 'DERIVATIVES', 'ORIGIN']
@@ -45,21 +51,31 @@ def create_dictionary_entry(result,
     dict_entry = DictionaryEntry(word)
     for text in parts_of_speech_text:
 
+        part_of_speech = first_word(text)
+
+        # Get rid of () pattern following the part of speech
+        bracket_regex = part_of_speech + r' \(.*?\)'
+        text = re.sub(bracket_regex, '', text, count=1)
+
         # Split the text by numbers, otherwise by first word
         split_text = re.split(r' \d ', text)
         if len(split_text) == 1:
             split_text = text.split(' ', 1)
-
-        part_of_speech = split_text[0]
 
         for definitions in split_text[1:]:
 
             # Only grab first definition
             dot = u'\u2022'
             dot_index = definitions.find(dot)
-            definition_text = definitions[:dot_index]
+            if dot_index > 0:
+                definition_text = definitions[:dot_index]
+            else:
+                definition_text = definitions
             colon_index = definition_text.find(':')
-            description = definition_text[:colon_index].strip()
+            if colon_index > 0:
+                description = definition_text[:colon_index].strip()
+            else:
+                description = definition_text
             description = add_period(description)
 
             usages = []
@@ -76,15 +92,20 @@ def create_dictionary_entry(result,
             break
     return dict_entry
 
-def dictionary_entry(word, num_definitions=1, num_parts_of_speech=3):
-    '''Returns a dictonary entry of the word'''
+def raw_entry(word):
     word_range = (0, len(word))
     dictionary_result = DCSCopyTextDefinition(None, word, word_range)
     if not dictionary_result:
         print "{} not found in Dictionary.".format(word)
         return None
     else:
-        return create_dictionary_entry(dictionary_result,
+        return dictionary_result
+
+def dictionary_entry(word, num_definitions=1, num_parts_of_speech=3):
+    '''Returns a dictonary entry of the word'''
+    dictionary_lookup = raw_entry(word)
+    if dictionary_lookup:
+        return create_dictionary_entry(dictionary_lookup,
                                        num_definitions,
                                        num_parts_of_speech)
 

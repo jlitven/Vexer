@@ -11,7 +11,7 @@ import argparse, logging, re
 from ConfigParser import SafeConfigParser
 import os, sys, pdb
 
-# SOMEDAY: Fix vocab definitions for 'groovy', 'party', 'pumpkin', 'a'
+# SOMEDAY: Fix vocab definitions for 'fiduciary'
 
 class AnkiWord(AnkiObject):
 

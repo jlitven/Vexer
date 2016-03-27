@@ -3,9 +3,9 @@ from setuptools import setup
 setup(
     name = 'vexer',
     version = '0.1',
-    description = 'Vocabulary expander using anki and mac osx dictionary',
-    url = 'https://github.com/jlitven/vex',
-    download_url = 'https://github.com/jlitven/vex/archive/v0.1.zip',
+    description = 'Vocabulary expander using anki and mac osx dictionary.',
+    url = 'https://github.com/jlitven/vexer',
+    download_url = 'https://github.com/jlitven/vexer/releases/download/v0.1/vexer-0.1.tar.gz',
     keywords = ['anki', 'english', 'vocabulary'],
     author = 'Joshua Litven',
     author_email = 'jlitven@gmail.com',
