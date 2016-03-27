@@ -24,7 +24,7 @@ class AnkiWord(AnkiObject):
     styling_text = '''
 .card {
  font-family: baskerville;
- font-size: 15px;
+ font-size: 25px;
  text-align: left;
  color: black;
  background-color: white;
@@ -39,7 +39,7 @@ class AnkiWord(AnkiObject):
 }
 
 h1, h2 {
- font-size: 20px;
+ font-size: 30px;
  margin: 0px
 }
 
