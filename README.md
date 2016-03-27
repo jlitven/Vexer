@@ -1,6 +1,10 @@
 # vexer
 Vexer (Vocabulary Expander) creates stylish, multiple-choice English vocabulary flash cards for the popular SRS software anki (http://ankisrs.net/) using Mac OS X's built-in dictionary.
 
+![Vexer example question](screenshots/vexer_example_card_question.png?raw=true "Vexer Example Question")
+
+![Vexer example answer](screenshots/vexer_example_card_answer.png?raw=true "Vexer Example Answer")
+
 ## Version
 0.2-alpha
 

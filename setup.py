@@ -5,7 +5,7 @@ setup(
     version = '0.2',
     description = 'Vocabulary expander using anki and mac osx dictionary.',
     url = 'https://github.com/jlitven/vexer',
-    download_url = 'https://github.com/jlitven/vexer/releases/download/v0.1/vexer-0.1.tar.gz',
+    download_url = 'https://github.com/jlitven/vexer/archive/v0.2-alpha.tar.gz',
     keywords = ['anki', 'english', 'vocabulary'],
     author = 'Joshua Litven',
     author_email = 'jlitven@gmail.com',
