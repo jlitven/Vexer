@@ -91,6 +91,7 @@ def get_words(input):
                     words.extend(line.lower().split())
     return words
 
+# SOMEDAY: Change the data directory location
 def get_data_dir():
     dir_name = 'data'
     path = os.path.dirname(os.path.realpath(__file__))
@@ -111,7 +112,8 @@ def get_config_file():
     config.read(get_config_file_path())
     if not config.sections():
         config.add_section(user)
-        config.add_section('card settings')
+        config.add_section(cards)
+        print 'Creating config file at {}'.format(get_config_file_path())
     return config
 
 # SOMEDAY: Make these functions more beautiful

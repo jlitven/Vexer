@@ -1,7 +1,7 @@
 # vexer
-Vexer (Vocabulary Expander) creates stylish English vocabulary flash cards for the popular SRS software anki (http://ankisrs.net/) using Mac OS X's built-in dictionary.
+Vexer (Vocabulary Expander) creates stylish English vocabulary flash cards for the popular SRS software Anki (http://ankisrs.net/) using Mac OS X's built-in dictionary.
 
-Vexer uses word definitions to construct cloze-deletioned, multiple-choice anki cards. Here is an example card with the words *silly*, *funky* and *goofy*:
+Vexer uses word definitions to construct cloze-deletioned, multiple-choice Anki cards. Here is an example card with the words *silly*, *funky* and *goofy*:
 ![Vexer example question](screenshots/vexer_example_card_question.png?raw=true "Vexer Example Question")
 
 And the corresponding answer:
@@ -32,21 +32,25 @@ or
 vexer my_words.txt
 ```
 
-Upon running for the first time, `vexer` will ask you for your anki collection path and the name of the deck the words will be added to. These will be stored in a `config.ini` file in the local package directory which you can edit if these parameters change.
+You may need to call `sudo vexer` to allow administrator permissions.
 
-You can also include the number of choices in a card using the -n_c paramater as well as the number of definitions for each part of speech using the -n_d parameter:
+_Note: Make sure Anki is closed or else vexer will give you a locked database error._
+
+Upon running for the first time, `vexer` will ask you for your Anki collection path and the name of the deck the words will be added to. These will be stored in a `config.ini` file in the local package directory which you can edit if these parameters change.
+
+You can also include the number of choices in a card using the -n_c (ranging from 2-5) paramater as well as the number of definitions for each part of speech using the -n_d parameter:
 ```
 vexer goofy funky silly -n_c 3 -n_d 2
 ```
 
-`vexer` also stores these parameters in the `config.ini` file.
+`vexer` stores defaults for these parameters in the `config.ini` file.
 
 For information about all parameters run:
 ```
 vexer --help
 ```
 
-_Note: Vexer adds the tag `vocabulary` to the anki cards. Do not edit these tags as vexer uses this tag information._
+_Note: Vexer adds the tag `vocabulary` to the Anki cards. Do not edit these tags as vexer uses this tag information._
 
 ## Uninstall
 `vexer` can be uninstalled using `pip`:

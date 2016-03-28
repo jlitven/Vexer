@@ -1,9 +1,16 @@
 from setuptools import setup
 
+try:
+    import pypandoc
+    long_description = pypandoc.convert('README.md', 'rst')
+except(IOError, ImportError):
+    long_description = open('README.md').read()
+
 setup(
     name = 'vexer',
     version = '0.2',
     description = 'Vocabulary expander using anki and mac osx dictionary.',
+    long_description = long_description,
     url = 'https://github.com/jlitven/vexer',
     download_url = 'https://github.com/jlitven/vexer/archive/v0.2-alpha.tar.gz',
     keywords = ['anki', 'english', 'vocabulary'],
