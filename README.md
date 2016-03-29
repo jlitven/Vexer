@@ -1,4 +1,4 @@
-    # Vexer
+#Vexer
 Check out [my blog post on Vexer](http://joshualitven.com/vexer/) for more information.
 
 Vexer (Vocabulary Expander) creates stylish English vocabulary flash cards for the popular SRS software [Anki](http://ankisrs.net/) using Mac OS X's built-in dictionary.
