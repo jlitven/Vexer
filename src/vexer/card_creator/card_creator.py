@@ -94,8 +94,11 @@ def get_all_answers_from_collection(collection, tag_name):
 
 def sample_answers_from_collection(collection, tag_name, num_samples):
     ids = get_card_ids(collection, tag_name)
-    error_msg = "Need at least {} in collection.".format(num_samples)
-    assert len(ids) >= num_samples, error_msg
+    if len(ids) < num_samples:
+        print "More words are required to create {} choices".format(
+                                                        num_samples)
+        sys.exit()
+
     sampled_ids = random.sample(ids, num_samples)
 
     return get_answers_from_collection(collection, sampled_ids)

@@ -7,9 +7,8 @@ Author: Joshua Litven
 Author-email: jlitven@gmail.com
 License: MIT
 Download-URL: https://github.com/jlitven/vexer/releases/download/v0.2.1-alpha/vexer-0.2.1.tar.gz
-Description: ::
-        
-            # Vexer
+Description: Vexer
+        =====
         
         Check out `my blog post on Vexer <http://joshualitven.com/vexer/>`__ for
         more information.
