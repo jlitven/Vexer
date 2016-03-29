@@ -240,10 +240,9 @@ def import_to_anki(file_path, tag_name, deck_name, collection):
 
     run_importer(file_path, tag_name, deck_name, collection)
 
-def get_csv_file_path():
-    file_name = 'temp.csv'
-    dir_name = os.path.dirname(os.path.realpath(__file__))
-    return os.path.join(dir_name, file_name)
+def get_csv_file_path(data_dir):
+    file_name = 'import_dump.csv'
+    return os.path.join(data_dir, file_name)
 
 def get_collection(collection_path):
     assert os.path.exists(collection_path), "No collection found."
@@ -253,10 +252,11 @@ def get_collection(collection_path):
     os.chdir(cwd)
     return collection
 
-def create_cards(anki_objects, deck_name, collection_path, num_choices):
+def create_cards(anki_objects, deck_name, collection_path,
+                 data_dir, num_choices):
 
     collection = get_collection(collection_path)
-    csv_file_path = get_csv_file_path()
+    csv_file_path = get_csv_file_path(data_dir)
     tag_name = anki_objects[0].tag_name
 
     write_to_csv(anki_objects, tag_name, csv_file_path, collection,

@@ -7,8 +7,10 @@ Vexer uses word definitions to construct cloze-deletioned, multiple-choice Anki 
 And the corresponding answer:
 ![Vexer example answer](screenshots/vexer_example_card_answer.png?raw=true "Vexer Example Answer")
 
+Check out ![my blog post on Vexer](http://joshualitven.com/vexer/) to learn more!
+
 ## Version
-0.2-alpha
+0.2.1-alpha
 
 ## Prerequisites
 * Python 2

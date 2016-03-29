@@ -3,7 +3,6 @@
 '''
 Script to create anki vocabulary cards.
 '''
-#from src.card_creator.card_creator import AnkiObject, HTML, get_collection
 from card_creator.card_creator import create_cards, AnkiObject, HTML, get_collection
 from dictionary_parser import dictionary_entry
 from collections import namedtuple
@@ -91,10 +90,9 @@ def get_words(input):
                     words.extend(line.lower().split())
     return words
 
-# SOMEDAY: Change the data directory location
 def get_data_dir():
-    dir_name = 'data'
-    path = os.path.dirname(os.path.realpath(__file__))
+    dir_name = 'vexer'
+    path = os.getenv("HOME")
     dir_path = os.path.join(path, dir_name)
     if not os.path.exists(dir_path):
         os.makedirs(dir_path)
@@ -288,7 +286,8 @@ def main():
     anki_words = create_anki_words(words, num_parts_of_speech,
                                    num_definitions)
 
-    create_cards(anki_words, deck_name, collection_path, num_choices)
+    create_cards(anki_words, deck_name, collection_path,
+                 get_data_dir(), num_choices)
 
 if __name__ == '__main__':
     main()
