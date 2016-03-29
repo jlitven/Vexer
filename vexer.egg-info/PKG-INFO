@@ -1,18 +1,22 @@
 Metadata-Version: 1.1
 Name: vexer
-Version: 0.2
-Summary: Vocabulary expander using anki and mac osx dictionary.
+Version: 0.2.1
+Summary: Learn Vocabulary using Anki and Mac OS X dictionary.
 Home-page: https://github.com/jlitven/vexer
 Author: Joshua Litven
 Author-email: jlitven@gmail.com
 License: MIT
-Download-URL: https://github.com/jlitven/vexer/archive/v0.2-alpha.tar.gz
-Description: vexer
-        =====
+Download-URL: https://github.com/jlitven/vexer/releases/download/v0.2.1-alpha/vexer-0.2.1.tar.gz
+Description: ::
+        
+            # Vexer
+        
+        Check out `my blog post on Vexer <http://joshualitven.com/vexer/>`__ for
+        more information.
         
         Vexer (Vocabulary Expander) creates stylish English vocabulary flash
-        cards for the popular SRS software Anki (http://ankisrs.net/) using Mac
-        OS X's built-in dictionary.
+        cards for the popular SRS software `Anki <http://ankisrs.net/>`__ using
+        Mac OS X's built-in dictionary.
         
         Vexer uses word definitions to construct cloze-deletioned,
         multiple-choice Anki cards. Here is an example card with the words
@@ -23,7 +27,7 @@ Description: vexer
         Version
         -------
         
-        0.2-alpha
+        0.2.1-alpha
         
         Prerequisites
         -------------
@@ -97,8 +101,8 @@ Description: vexer
         
             sudo pip uninstall vexer
         
-        .. |Vexer example question| image:: screenshots/vexer_example_card_question.png?raw=true
-        .. |Vexer example answer| image:: screenshots/vexer_example_card_answer.png?raw=true
+        .. |Vexer example question| image:: https://raw.githubusercontent.com/jlitven/vexer/master/screenshots/vexer_example_card_question.png?raw=true
+        .. |Vexer example answer| image:: https://raw.githubusercontent.com/jlitven/vexer/master/screenshots/vexer_example_card_answer.png?raw=true
         
         
 Keywords: anki,english,vocabulary

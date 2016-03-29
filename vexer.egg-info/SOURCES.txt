@@ -1,3 +1,6 @@
+LICENSE.txt
+MANIFEST.in
+README.md
 setup.cfg
 setup.py
 src/anki/__init__.py

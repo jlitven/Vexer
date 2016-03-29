@@ -1,13 +1,13 @@
-# vexer
-Vexer (Vocabulary Expander) creates stylish English vocabulary flash cards for the popular SRS software Anki (http://ankisrs.net/) using Mac OS X's built-in dictionary.
+    # Vexer
+Check out [my blog post on Vexer](http://joshualitven.com/vexer/) for more information.
+
+Vexer (Vocabulary Expander) creates stylish English vocabulary flash cards for the popular SRS software [Anki](http://ankisrs.net/) using Mac OS X's built-in dictionary.
 
 Vexer uses word definitions to construct cloze-deletioned, multiple-choice Anki cards. Here is an example card with the words *silly*, *funky* and *goofy*:
-![Vexer example question](screenshots/vexer_example_card_question.png?raw=true "Vexer Example Question")
+![Vexer example question](https://raw.githubusercontent.com/jlitven/vexer/master/screenshots/vexer_example_card_question.png?raw=true "Vexer Example Question")
 
 And the corresponding answer:
-![Vexer example answer](screenshots/vexer_example_card_answer.png?raw=true "Vexer Example Answer")
-
-Check out ![my blog post on Vexer](http://joshualitven.com/vexer/) to learn more!
+![Vexer example answer](https://raw.githubusercontent.com/jlitven/vexer/master/screenshots/vexer_example_card_answer.png?raw=true "Vexer Example Answer")
 
 ## Version
 0.2.1-alpha

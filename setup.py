@@ -8,11 +8,11 @@ except(IOError, ImportError):
 
 setup(
     name = 'vexer',
-    version = '0.2',
-    description = 'Vocabulary expander using anki and mac osx dictionary.',
+    version = '0.2.1',
+    description = 'Learn Vocabulary using Anki and Mac OS X dictionary.',
     long_description = long_description,
     url = 'https://github.com/jlitven/vexer',
-    download_url = 'https://github.com/jlitven/vexer/archive/v0.2-alpha.tar.gz',
+    download_url = 'https://github.com/jlitven/vexer/releases/download/v0.2.1-alpha/vexer-0.2.1.tar.gz',
     keywords = ['anki', 'english', 'vocabulary'],
     author = 'Joshua Litven',
     author_email = 'jlitven@gmail.com',
