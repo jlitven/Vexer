@@ -1,5 +1,5 @@
 #Vexer
-Check out [my blog post on Vexer](http://joshualitven.com/vexer/) for more information.
+Check out [my blog post on Vexer](http://joshualitven.com/vexer/) or [my tutorial on creating anki cards using python](http://joshualitven.com/creating-anki-cards-using-python/) for more information.
 
 Vexer (Vocabulary Expander) creates stylish English vocabulary flash cards for the popular SRS software [Anki](http://ankisrs.net/) using Mac OS X's built-in dictionary.
 
